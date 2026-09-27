@@ -1,0 +1,120 @@
+import curses
+import os
+
+# Arquivo emulado que simula as 40 trilhas e 18 setores (256 bytes por setor)
+ARQUIVO_DISCO = "disco_emulado.img"
+TAM_SETOR = 256
+TOTAL_TRILHAS = 40
+TOTAL_SETORES = 18
+
+# Criar um disco virtual de teste se não existir (aprox. 184 KB)
+if not os.path.exists(ARQUIVO_DISCO):
+    with open(ARQUIVO_DISCO, "wb") as f:
+        f.write(b"\x00" * (TOTAL_TRILHAS * TOTAL_SETORES * TAM_SETOR))
+
+class ZapperEmulado:
+    def __init__(self):
+        self.drive = 0
+        self.trilha = 0
+        self.setor = 1
+        self.modo = "DEC"  # DEC, ASC, GRA
+        self.buffer = bytearray(TAM_SETOR)
+        self.cursor_l = 0
+        self.cursor_c = 0
+
+    def ler_setor_disco(self):
+        """ Equivale à sua rotina antiga em Assembly X = USR2(0) """
+        posicao = (self.trilha * TOTAL_SETORES + (self.setor - 1)) * TAM_SETOR
+        with open(ARQUIVO_DISCO, "rb") as f:
+            f.seek(posicao)
+            self.buffer = bytearray(f.read(TAM_SETOR))
+
+    def gravar_setor_disco(self):
+        """ Equivale à sua rotina de gravação física X = USR0(0) """
+        posicao = (self.trilha * TOTAL_SETORES + (self.setor - 1)) * TAM_SETOR
+        with open(ARQUIVO_DISCO, "r+b") as f:
+            f.seek(posicao)
+            f.write(self.buffer)
+
+    def desenhar_interface(self, stdscr):
+        stdscr.clear()
+        # Cabeçalho baseado no seu PRINT do bloco 90
+        stdscr.addstr(0, 0, "****************************************")
+        stdscr.addstr(1, 0, "*   --  ZAPPER/PY - EMULADO MODERN    *")
+        stdscr.addstr(2, 0, "*    Baseado no codigo original 1986   *")
+        stdscr.addstr(3, 0, "****************************************")
+        
+        # Status do topo
+        stdscr.addstr(5, 0, f"MODO: [{self.modo}]")
+        stdscr.addstr(6, 0, f"Drive: {self.drive}   Trilha: {self.trilha}   Setor: {self.setor}")
+        stdscr.addstr(7, 0, "-" * 50)
+
+        # Exibir a matriz do buffer de 256 bytes (16 linhas x 16 colunas)
+        for l in range(16):
+            linha_str = f"{l*16:03d}: "
+            for c in range(16):
+                idx = l * 16 + c
+                val = self.buffer[idx]
+                if self.modo == "DEC":
+                    linha_str += f"{val:03d} "
+                elif self.modo == "ASC":
+                    linha_str += f" {chr(val) if 32 <= val <= 126 else '.'}  "
+            stdscr.addstr(9 + l, 0, linha_str)
+
+        # Destacar a posição atual do cursor simulando o POKE de inversão (191)
+        idx_atual = self.cursor_l * 16 + self.cursor_c
+        val_atual = self.buffer[idx_atual]
+        stdscr.addstr(26, 0, f"Posição do Buffer: {idx_atual}  |  Valor: {val_atual}")
+        stdscr.addstr(27, 0, "[Setas] Move | [M] Muda Modo | [E] Editar Byte | [S] Salvar no Disco | [Q] Sair")
+        stdscr.refresh()
+
+    def rodar(self, stdscr):
+        curses.curs_set(0) # Esconde cursor padrão do terminal
+        self.ler_setor_disco()
+
+        while True:
+            self.desenhar_interface(stdscr)
+            ch = stdscr.getch()
+
+            # Navegação do cursor (Equivalente às linhas 310-360)
+            if ch == curses.KEY_UP and self.cursor_l > 0:
+                self.cursor_l -= 1
+            elif ch == curses.KEY_DOWN and self.cursor_l < 15:
+                self.cursor_l += 1
+            elif ch == curses.KEY_LEFT and self.cursor_c > 0:
+                self.cursor_c -= 1
+            elif ch == curses.KEY_RIGHT and self.cursor_c < 15:
+                self.cursor_c += 1
+            
+            # Atalho para mudar modos (Equivalente às linhas 640-660)
+            elif ch in [ord('m'), ord('M')]:
+                self.modo = "ASC" if self.modo == "DEC" else "DEC"
+
+            # Modificar valor (Equivalente às linhas 490-500)
+            elif ch in [ord('e'), ord('E')]:
+                curses.echo()
+                stdscr.addstr(28, 0, "Novo valor (0-255):    ")
+                stdscr.move(28, 20)
+                try:
+                    entrada = stdscr.getstr().decode('utf-8')
+                    nv = int(entrada)
+                    if 0 <= nv <= 255:
+                        idx = self.cursor_l * 16 + self.cursor_c
+                        self.buffer[idx] = nv
+                except ValueError:
+                    pass
+                curses.noecho()
+
+            # Salvar no disco virtual (Equivalente às linhas 690-720)
+            elif ch in [ord('s'), ord('S')]:
+                stdscr.addstr(28, 0, "Confirmar alteração no disco virtual? (S/N): ")
+                confirmar = stdscr.getch()
+                if confirmar in [ord('s'), ord('S')]:
+                    self.gravar_setor_disco()
+                
+            elif ch in [ord('q'), ord('Q')]:
+                break
+
+if __name__ == "__main__":
+    zapper = ZapperEmulado()
+    curses.wrapper(zapper.rodar)

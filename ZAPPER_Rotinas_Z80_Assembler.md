@@ -13,9 +13,9 @@ O BASIC carrega os bytes nestes endereços e define as entradas:
 
 | Linha `DATA` | Bytes | Endereço de carga (hex) | Entrada BASIC |
 |---|---:|---:|---|
-| 60 | 47 | `B8E3` | `USR1=-18205` |
-| 70 | 38 | `8000` | `USR2=-32768` |
-| 80 | 13 | `7FF3` | `USR0=32755` |
+| 60 | 47 | `B8E3` | `USR1=-18205` | Carrega o buffer na tela |
+| 70 | 38 | `8000` | `USR2=-32768` | Limpa meia tela |
+| 80 | 13 | `7FF3` | `USR0=32755` | lê ou grava o setor do disco usando o buffer |
 
 Os endereços negativos são interpretados como endereços de 16 bits em
 complemento de dois: `-18205` equivale a `0xB8E3` e `-32768` a `0x8000`.
@@ -33,7 +33,7 @@ Convenções das listagens abaixo:
 - Os nomes `L60_*`, `L70_*` e `L80_*` são rótulos explicativos deste documento,
   não rótulos presentes no BASIC original.
 
-## Linha 60 — exibição da grade e dos bytes
+## Linha 60 — Carrega o buffer na tela
 
 **Entrada:** `B8E3` (`USR1`). **Tamanho:** 47 bytes (`B8E3–B911`).
 
@@ -104,7 +104,7 @@ consecutivos de 16 bytes desde `0x7E00` para linhas de destino com passo de
 64 bytes, totalizando 256 bytes. O significado visual dos valores `95h` e
 `AAh` depende do conjunto de caracteres e do mapeamento de tela da máquina.
 
-## Linha 70 — limpeza e preenchimento de área de tela
+## Linha 70 — Limpa meia tela
 
 **Entrada:** `8000` (`USR2`). **Tamanho:** 38 bytes (`8000–8025`).
 
@@ -168,7 +168,7 @@ deslocamento `EBh` leva de `8025` a `8010`, onde a execução passa tanto pela
 instrução que carrega `HL` quanto pela que recarrega `BC`; portanto, cada
 iteração volta a copiar 34 espaços, não a executar `LDIR` com contador zero.
 
-## Linha 80 — preparação de parâmetros e chamada externa
+## Linha 80 — lê ou grava o setor do disco usando o buffer usando chamada externa
 
 **Entrada:** `7FF3` (`USR0`). **Tamanho:** 13 bytes (`7FF3–7FFF`).
 

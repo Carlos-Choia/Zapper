@@ -18,9 +18,9 @@ Deve-se tomar cuidado na digitação do programa, principalmente nas linhas DATA
 Para testar o programa, utilize um disquete cópia, pois qualquer erro de digitação poderá ser fatal.
 
 
-ÁREAS DE MEMÓRIA
-Zapper utiliza as seguintes áreas de memória: 
+ÁREAS DE MEMÓRIA:
 
+|---|---|---|
 | Parte | Area de Memoria | Função |
 | Programa BASIC | 6A7DH até 7887H | Interface e tela |
 | Buffer auxiliar | 7E00H até 7EFFH | Usado para editar o setor |

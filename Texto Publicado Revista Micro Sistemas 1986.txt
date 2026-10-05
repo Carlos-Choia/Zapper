@@ -1,0 +1,59 @@
+MICRO SISTEMAS, dezembro/86
+
+
+Se você tem um micro da linha TRS-80 e quer modificar ou visualizar dados nas trilhas e setores de um disquete, aqui está a solução.
+
+Zapper
+Carlos Henrique Choia e Sven Bleckwedel
+
+Um dos pontos fracos do TRSDOS em relação aos ou tros sistemas operacionais é o fato dele não possuir um Zapper que possibilite a visualização e modifica ção diretamente no disquete.
+
+Aqueles que possuem o NEWDOS quebram o galho, utilizando o Superzap. Este, porém, apresenta o inconveniente de, ao mudar de uma trilha para a outra, não achar o setor. Outra alternativa para o TRSDOS é o famoso Super Utility.
+Porém, devido à falta do manual, muitos não conseguem usar corretamente, correndo o sério risco de perder programas. 
+Devido a isso criamos o Zapper. Ele permite fazer pequenas alterações no disquete, tais como mudar mensagens de erro,
+corrigir falhas no diretório etc.
+
+
+Deve-se tomar cuidado na digitação do programa, principalmente nas linhas DATA. 
+Para testar o programa, utilize um disquete cópia, pois qualquer erro de digitação poderá ser fatal.
+
+
+ÁREAS DE MEMÓRIA
+Zapper utiliza as seguintes áreas de memória: 
+
+| Parte | Area de Memoria | Função |
+| Programa BASIC | 6A7DH até 7887H | Interface e tela |
+| Buffer auxiliar | 7E00H até 7EFFH | Usado para editar o setor |
+| Rotina 0 | 7FF3H até 7FFFH | lê ou grava o setor do disco para o buffer |
+| Rotina 1 | B8E3H até B911H | coloca o buffer na tela |
+| Rotina 2 | 8000H até 8025H | faz um CLS de meia tela |
+
+COMO UTILIZAR O PROGRAMA
+Ao executar o programa, você verá na tela: 
+DRIVE: TRILHA: SETOR:
+Os valores possíveis para esses itens são: 0-3 para drive, 0-39 para trilha e 1-18 para setor. 
+Você então verá, no lado direito da tela, uma imagem do setor. Para se passar de um setor para outro, utilize as teclas
+";" (próximo setor) e "-" (setor anterior). 
+
+Antes de realizar qualquer alteração, você pode selecionar os modos ASCII, decimal e gráfico.
+No modo decimal, você poderá fazer as mudanças utilizando o valor do código ASCII. 
+Por exemplo, para colocar a letra "A" você deverá entrar com o valor 65.
+
+DIGITAÇÃO
+O programa está totalmente escrito em BASIC e se utiliza de três rotinas para acelerar o processamento. 
+
+No modo ASCII, você poderá entrar com os dados direta mente do teclado. 
+Já no modo gráfico, serão utilizadas as teclas 8, 9, 5, 6, 2 e 3 para colocar o caráter gráfico desejado. 
+Note que essas teclas, no teclado numérico reduzido, têm a mesma forma que o bloco gráfico 191, portanto, utilize-as
+para desenhar o caráter. A tecla "M" permite modificar o setor. 
+Utilize as setas para movimentar o cursor até a posição desejada e para fazer a alteração, pressione <CLEAR>, fazendo em seguida a modificação. Cada modificação deverá ser precedida de um <CLEAR> A barra-de-espaços é usada para sair do comando de modificação, permitindo que se confirme ou não as modificações realizadas. O comando "X" retorna às opções drive, trilha e setor, ao passo que o comando "F" termina o programa e volta para
+o BASIC.
+
+CONSIDERAÇÕES FINAIS
+Este programa foi feito em um CP 500, sendo compatível com qualquer TRS-80 modelo III que tenha 48 Kb de RAM e pelo menos um drive. 
+Assim, ele se utiliza de rotinas específicas para leitura e gravação de setores. Caso você possua um TRS-80 compatível com o modelo I, deverão ser feitas algumas modificações na rotina 0, responsável pela leitura e gravação de setores no disco.
+
+Carlos Henrique Choia è usuário de um CP 500 há três anos e desenvolve programas em Assembler e BASIC
+Sven Bleckwedel cursa o terceiro ano de engenharia civil na Faculdade Santa Cecília, em Santos. Ele utiliza o CP 500 de sua faculdade no
+desenvolvimento de programas de sua área nas linguagens COBOL, BASIC e Assembler.
+

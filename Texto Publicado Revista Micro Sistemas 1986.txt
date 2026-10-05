@@ -20,7 +20,7 @@ Para testar o programa, utilize um disquete cópia, pois qualquer erro de digita
 
 ÁREAS DE MEMÓRIA:
 
-|---|---|---|
+|----|----|----|
 | Parte | Area de Memoria | Função |
 | Programa BASIC | 6A7DH até 7887H | Interface e tela |
 | Buffer auxiliar | 7E00H até 7EFFH | Usado para editar o setor |

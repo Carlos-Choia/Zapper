@@ -4,9 +4,9 @@
 
 Este documento descreve o comportamento observável em
 [`ZAPPER_Reconstruido_Copilot.BAS`](./ZAPPER_Reconstruido_Copilot.BAS), uma
-reconstrução identificada no próprio arquivo como parcial e revisada. O
+reconstrução do próprio arquivo revisada pelo autor. O
 programa declara autoria de Carlos Henrique Choia e Sven Bleckwedel e
-referência à revista *Micro Sistemas* nº 63, de dezembro de 1986.
+publicado na revista *Micro Sistemas* nº 63, de dezembro de 1986.
 
 O fonte BASIC deve ser preservado sem alterações. Esta documentação é
 complementar: não substitui o artigo original, uma listagem impressa ou a

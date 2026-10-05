@@ -12,7 +12,7 @@ abaixo são a tradução dessas instruções.
 O BASIC carrega os bytes nestes endereços e define as entradas:
 
 | Linha `DATA` | Bytes | Endereço de carga (hex) | Entrada BASIC |
-|---|---:|---:|---|
+|---|---:|---:|---|---|
 | 60 | 47 | `B8E3` | `USR1=-18205` | Carrega o buffer na tela |
 | 70 | 38 | `8000` | `USR2=-32768` | Limpa meia tela |
 | 80 | 13 | `7FF3` | `USR0=32755` | lê ou grava o setor do disco usando o buffer |

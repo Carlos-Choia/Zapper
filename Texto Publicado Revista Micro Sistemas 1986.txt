@@ -20,13 +20,14 @@ Para testar o programa, utilize um disquete cópia, pois qualquer erro de digita
 
 ÁREAS DE MEMÓRIA:
 
-|----|----|----
-| Parte | Area de Memoria | Função 
-| Programa BASIC | 6A7DH até 7887H | Interface e tela 
-| Buffer auxiliar | 7E00H até 7EFFH | Usado para editar o setor 
-| Rotina 0 | 7FF3H até 7FFFH | lê ou grava o setor do disco para o buffer 
-| Rotina 1 | B8E3H até B911H | coloca o buffer na tela 
-| Rotina 2 | 8000H até 8025H | faz um CLS de meia tela 
+
+| Parte            | Area de Memoria | Função
+|------------------|-----------------|--------------------------------------------
+| Programa BASIC   | 6A7DH até 7887H | Interface e tela 
+| Buffer auxiliar  | 7E00H até 7EFFH | Usado para editar o setor 
+| Rotina 0         | 7FF3H até 7FFFH | lê ou grava o setor do disco para o buffer 
+| Rotina 1         | B8E3H até B911H | coloca o buffer na tela 
+| Rotina 2         | 8000H até 8025H | faz um CLS de meia tela 
 
 COMO UTILIZAR O PROGRAMA
 Ao executar o programa, você verá na tela: 
